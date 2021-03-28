@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <unistd.h>
 
 #define PORT 9002
 
@@ -15,13 +16,12 @@ int main(int argc, char *argv[])
     server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = INADDR_ANY;
 
-    int connection_status = connect(network_soket, (struct sockaddr *) &server_address, sizeof(server_address));
-    if (connection_status == -1)
-        printf("There was an error making a connection to the remote socket");
+    if (connect(network_soket, (struct sockaddr *) &server_address, sizeof(server_address)) == -1)
+        printf("There was an error making a connection to the remote socket\n");
 
     char server_response[256];
     recv(network_soket, &server_response, sizeof(server_response), 0);
-    printf("The server sent the data %s", server_response);
+    printf("The server sent the data %s\n", server_response);
 
     close(network_soket);
 
